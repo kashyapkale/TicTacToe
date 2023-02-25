@@ -2,6 +2,7 @@ package com.tictactoe;
 
 import com.tictactoe.Utils.Utils;
 import com.tictactoe.models.Grid;
+import com.tictactoe.models.Position;
 import com.tictactoe.models.User;
 
 import java.util.Scanner;
@@ -10,10 +11,10 @@ public class Main {
 
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter Details for Player 1 : ");
+        System.out.println("Enter name of Player 1 : ");
         String PlayerA = sc.nextLine();
 
-        System.out.println("Enter Details for Player 2 : ");
+        System.out.println("Enter name of Player 2 : ");
         String PlayerB = sc.nextLine();
 
         System.out.println("Assigning Roles to Users : ");
@@ -27,18 +28,20 @@ public class Main {
         User userB = new User(PlayerB,2,roleB);
         Grid grid = new Grid(3);
 
+        Position playerAPosition = new Position(-1,-1);
+        Position playerBPosition = new Position(-1,-1);
         while(true){
-            System.out.println(userA.getName()+" Enter Position : ");
-            int row = sc.nextInt() - 1;
-            int col = sc.nextInt() - 1;
-            while(!Utils.isValidPosition(row,col,grid)){
-                System.out.println(userA.getName()+"Please Enter Valid Position : ");
-                row = sc.nextInt() - 1;
-                col = sc.nextInt() - 1;
+            Utils.InputPosition(playerAPosition, userA.getName(), false, sc);
+            while(!Utils.isValidPosition(playerAPosition.getRow(), playerAPosition.getColumn(), grid)){
+                Utils.InputPosition(playerAPosition, userA.getName(), true, sc);
             }
-            Utils.PerformGridOperations(userA,grid,row,col);
+            Utils.PerformGridOperations(userA, grid, playerAPosition.getRow(), playerAPosition.getColumn());
 
-            if(Utils.isWinningCondition(grid,userA.getRoleAssigned(),row,col) == true){
+            if(Utils.isWinningCondition(
+                    grid,
+                    userA.getRoleAssigned(),
+                    playerAPosition.getRow(),
+                    playerAPosition.getColumn())){
                 System.out.println(userA.getName()+" wins the game !!");
                 break;
             }
@@ -47,18 +50,18 @@ public class Main {
                 break;
             }
             else{
-                System.out.println(userB.getName()+" Enter Position : ");
-                row = sc.nextInt() - 1;
-                col = sc.nextInt() - 1;
-                while(!Utils.isValidPosition(row,col,grid)){
-                    System.out.println(userB.getName()+"Please Enter Valid Position : ");
-                    row = sc.nextInt() - 1;
-                    col = sc.nextInt() - 1;
+                Utils.InputPosition(playerBPosition, userB.getName(), false, sc);
+                while(!Utils.isValidPosition(playerBPosition.getRow(), playerBPosition.getColumn(), grid)){
+                    Utils.InputPosition(playerBPosition, userB.getName(), true, sc);
                 }
-                Utils.PerformGridOperations(userB,grid,row,col);
+                Utils.PerformGridOperations(userB, grid, playerBPosition.getRow(), playerBPosition.getColumn());
 
 
-                if(Utils.isWinningCondition(grid,userB.getRoleAssigned(),row,col) == true){
+                if(Utils.isWinningCondition(
+                        grid,
+                        userB.getRoleAssigned(),
+                        playerBPosition.getRow(),
+                        playerBPosition.getColumn())){
                     System.out.println(userB.getName()+" wins the game !!");
                     break;
                 }

@@ -9,8 +9,8 @@ public class Grid {
     private @Getter @Setter int dimension;
     private @Getter @Setter Boolean isComplete;
     private @Getter int FilledSize = 0;
-    private int MaxGridSize;
-    private char[][] grid;
+    private final int MaxGridSize;
+    private final char[][] grid;
 
     public Grid(int dimension){
         this.dimension = dimension;
@@ -45,9 +45,9 @@ public class Grid {
     }
 
     public void printGrid(){
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                System.out.print(grid[i][j]+" ");
+        for (char[] chars : grid) {
+            for (char aChar : chars) {
+                System.out.print(aChar + " ");
             }
             System.out.println("");
         }
